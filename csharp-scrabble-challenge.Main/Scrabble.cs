@@ -64,8 +64,6 @@ namespace csharp_scrabble_challenge.Main
             //      Triple: Multiplier = Multiplier * 3
             //     Score = Score + _scoreTable[bokstav] * Multiplier
 
-            // [ { h 
-
             int score = 0;
             int multiplier = 1;
 
