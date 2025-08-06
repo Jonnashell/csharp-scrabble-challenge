@@ -56,38 +56,58 @@ namespace csharp_scrabble_challenge.Main
         public int score()
         {
             //TODO: score calculation code goes here
-            //throw new NotImplementedException(); //TODO: Remove this line when the code has been written
             // Score = 0
+            // Multiplier = 1
             // For hver bokstav:
-            //     Er vi i en double eller triple?
-            //          Yes: Multiplier = 2 eller 3
-            //          No: Multiplier = 1
+            //     Går vi inn i en bracket?
+            //      Double: Multiplier = Multiplier * 2
+            //      Triple: Multiplier = Multiplier * 3
             //     Score = Score + _scoreTable[bokstav] * Multiplier
 
             int score = 0;
+            int multiplier = 1;
             bool inDouble = false;
             bool inTriple = false;
-            int multiplier = 1;
             foreach (char letter in _word)
             {
+                // Check for numbers (invalid input)
+                if (Char.IsDigit(letter))
+                {
+                    return 0;
+                }
+
                 // Detect double scores
                 if (letter == '{')
                 {
-                    inDouble = true; multiplier = 2;
+                    inDouble = true;
+                    multiplier = multiplier * 2;
                 }
                 if (letter == '}')
                 {
-                    inDouble = false; multiplier = 1;
+                    // Invalid case, no opening curly bracket first
+                    if (!inDouble)
+                    {
+                        return 0;
+                    }
+                    multiplier = multiplier / 2;
+                    inDouble = false;
                 }
 
                 // Detect triple scores
                 if (letter == '[')
                 {
-                    inTriple = true; multiplier = 3;
+                    inTriple = true;
+                    multiplier = 3;
                 }
                 if (letter == ']')
                 {
-                    inTriple = false; multiplier = 1;
+                    // Invalid case, no opening square bracket first
+                    if (!inTriple)
+                    {
+                        return 0;
+                    }
+                    multiplier = multiplier / 3;
+                    inTriple = false;
                 }
 
                 // Check for valid letters
