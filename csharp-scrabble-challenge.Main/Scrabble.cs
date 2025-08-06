@@ -64,10 +64,23 @@ namespace csharp_scrabble_challenge.Main
             //      Triple: Multiplier = Multiplier * 3
             //     Score = Score + _scoreTable[bokstav] * Multiplier
 
+            // [ { h 
+
             int score = 0;
             int multiplier = 1;
-            bool inDouble = false;
-            bool inTriple = false;
+
+            // Check for invalid cases
+            int o_brackets = _word.Split('{').Length;
+            int c_brackets = _word.Split('}').Length;
+
+            int o_Sbrackets = _word.Split('[').Length;
+            int c_Sbrackets = _word.Split(']').Length;
+
+            if (o_brackets != c_brackets || o_Sbrackets != c_Sbrackets)
+            {
+                return 0;
+            }
+
             foreach (char letter in _word)
             {
                 // Check for numbers (invalid input)
@@ -79,35 +92,22 @@ namespace csharp_scrabble_challenge.Main
                 // Detect double scores
                 if (letter == '{')
                 {
-                    inDouble = true;
                     multiplier = multiplier * 2;
                 }
                 if (letter == '}')
                 {
                     // Invalid case, no opening curly bracket first
-                    if (!inDouble)
-                    {
-                        return 0;
-                    }
                     multiplier = multiplier / 2;
-                    inDouble = false;
                 }
 
                 // Detect triple scores
                 if (letter == '[')
                 {
-                    inTriple = true;
-                    multiplier = 3;
+                    multiplier = multiplier * 3;
                 }
                 if (letter == ']')
                 {
-                    // Invalid case, no opening square bracket first
-                    if (!inTriple)
-                    {
-                        return 0;
-                    }
                     multiplier = multiplier / 3;
-                    inTriple = false;
                 }
 
                 // Check for valid letters

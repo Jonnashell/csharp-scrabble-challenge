@@ -28,10 +28,17 @@ namespace csharp_scrabble_challenge.Test
         [TestCase(" \t\n", 0)]
         [TestCase("\n\r\t\b\f", 0)]
         [TestCase("a", 1)]
+        [TestCase("{{a}}", 4)]
+        [TestCase("{{[a]}}", 12)]
+        [TestCase("{a}}", 0)]
         [TestCase("f", 4)]
         [TestCase("OXyPHEnBUTaZoNE", 41)]
         [TestCase("quirky", 22)]
         [TestCase("street", 6)]
+        [TestCase("{{a}}", 4)]
+        [TestCase("[[a]]", 9)]
+        [TestCase("{[{[a]}]}", 36)]
+        [TestCase("[[{{a]}]}", 36)]
         public void WordScoreTests(string word, int targetScore)
         {
             Scrabble scrabble = new Scrabble(word);
